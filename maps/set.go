@@ -1,6 +1,6 @@
 package maps
 
-import "litu/cmp"
+import "github.com/vizee/litu/cmp"
 
 type Set[K comparable] map[K]struct{}
 

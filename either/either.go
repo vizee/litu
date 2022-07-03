@@ -1,7 +1,7 @@
 package either
 
 import (
-	"litu/option"
+	"github.com/vizee/litu/option"
 )
 
 type Either[L, R any] struct {

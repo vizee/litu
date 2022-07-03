@@ -1,6 +1,6 @@
 package slice
 
-import "litu/option"
+import "github.com/vizee/litu/option"
 
 func Get[T any](a []T, idx int) option.Option[T] {
 	if idx < len(a) {

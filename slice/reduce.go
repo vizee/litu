@@ -1,9 +1,9 @@
 package slice
 
 import (
-	"litu/cmp"
-	"litu/constraints"
-	"litu/option"
+	"github.com/vizee/litu/cmp"
+	"github.com/vizee/litu/constraints"
+	"github.com/vizee/litu/option"
 )
 
 func Reduce[T, U any](a []T, v U, f func(U, *T) U) U {

@@ -1,8 +1,8 @@
 package slice
 
 import (
-	"litu/cmp"
-	"litu/constraints"
+	"github.com/vizee/litu/cmp"
+	"github.com/vizee/litu/constraints"
 )
 
 func Union[T comparable](a []T, b []T) []T {

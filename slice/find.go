@@ -2,10 +2,11 @@ package slice
 
 import (
 	"bytes"
-	"litu/cmp"
-	"litu/constraints"
-	"litu/ptr"
 	"unsafe"
+
+	"github.com/vizee/litu/cmp"
+	"github.com/vizee/litu/constraints"
+	"github.com/vizee/litu/ptr"
 )
 
 type Position int

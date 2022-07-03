@@ -1,6 +1,6 @@
 package slice
 
-import "litu/option"
+import "github.com/vizee/litu/option"
 
 type MapFn[T, U any] func(*T) U
 

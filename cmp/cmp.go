@@ -1,6 +1,6 @@
 package cmp
 
-import . "litu/constraints"
+import . "github.com/vizee/litu/constraints"
 
 type Cmp[T any] func(a, b T) int
 
