@@ -95,6 +95,23 @@ func DiffSorted[T constraints.Compare](a []T, b []T) []T {
 	return r
 }
 
+func Dedup[T any](a []T, eq cmp.Equal[T]) []T {
+	i := 0
+	for j := 1; j < len(a); j++ {
+		if !eq(a[i], a[j]) {
+			i++
+			if i != j {
+				a[i] = a[j]
+			}
+		}
+	}
+	if i+1 < len(a) {
+		return a[:i+1]
+	} else {
+		return a
+	}
+}
+
 func DedupSorted[T comparable](a []T) []T {
 	i := 0
 	for j := 1; j < len(a); j++ {
