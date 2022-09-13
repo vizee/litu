@@ -5,9 +5,9 @@ import (
 )
 
 type Either[L, R any] struct {
-	mark  byte
 	left  L
 	right R
+	mark  byte
 }
 
 func (e *Either[L, R]) IsLeft() bool {

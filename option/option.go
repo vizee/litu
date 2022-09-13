@@ -47,6 +47,10 @@ func (o *Option[T]) OrElse(f func() Option[T]) Option[T] {
 	}
 }
 
+func (o *Option[T]) Into() (T, bool) {
+	return o.v, o.some
+}
+
 func Some[T any](v T) Option[T] {
 	return Option[T]{
 		v:    v,
