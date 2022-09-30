@@ -10,6 +10,20 @@ func Get[T any](a []T, idx int) option.Option[T] {
 	}
 }
 
+func Set[T any](a []T, idx int, v T) []T {
+	if idx >= len(a) {
+		if cap(a) > idx {
+			a = a[: idx+1 : cap(a)]
+		} else {
+			t := make([]T, idx+1)
+			copy(t, a)
+			a = t
+		}
+	}
+	a[idx] = v
+	return a
+}
+
 func Swap[T any](a []T, i int, j int) {
 	t := a[i]
 	a[i] = a[j]
