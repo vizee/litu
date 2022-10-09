@@ -19,7 +19,7 @@ func (p Position) IsSome() bool {
 	return p >= 0
 }
 
-func Find[T comparable](haystack []T, needle *T) Position {
+func Find[T comparable](haystack []T, needle T) Position {
 	switch any((*T)(nil)).(type) {
 	case *byte:
 		// fuck type
@@ -28,7 +28,7 @@ func Find[T comparable](haystack []T, needle *T) Position {
 		return Position(bytes.IndexByte(haystack_, needle_))
 	default:
 		for i := 0; i < len(haystack); i++ {
-			if haystack[i] == *needle {
+			if haystack[i] == needle {
 				return Position(i)
 			}
 		}
@@ -36,7 +36,7 @@ func Find[T comparable](haystack []T, needle *T) Position {
 	}
 }
 
-func Contains[T comparable](haystack []T, needle *T) bool {
+func Contains[T comparable](haystack []T, needle T) bool {
 	return Find(haystack, needle).IsSome()
 }
 

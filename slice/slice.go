@@ -1,6 +1,9 @@
 package slice
 
-import "github.com/vizee/litu/option"
+import (
+	"github.com/vizee/litu/cmp"
+	"github.com/vizee/litu/option"
+)
 
 func Get[T any](a []T, idx int) option.Option[T] {
 	if idx < len(a) {
@@ -74,4 +77,28 @@ func ForEach[T any](a []T, f func(*T)) {
 	for i := range a {
 		f(&a[i])
 	}
+}
+
+func Equal[T any](a []T, b []T, eq cmp.Equal[*T]) bool {
+	if len(a) == len(b) {
+		for i := range a {
+			if eq(&a[i], &b[i]) {
+				return false
+			}
+		}
+		return true
+	}
+	return false
+}
+
+func EqualPtr[T any](a []*T, b []*T, eq cmp.Equal[*T]) bool {
+	if len(a) == len(b) {
+		for i := range a {
+			if eq(a[i], b[i]) {
+				return false
+			}
+		}
+		return true
+	}
+	return false
 }

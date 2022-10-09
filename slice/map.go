@@ -86,3 +86,12 @@ func FlatMap[T, U any](a [][]T, f MapFn[T, U]) []U {
 	}
 	return r
 }
+
+func FirstPtr[T any](a []*T, pred PredFn[T]) *T {
+	for _, v := range a {
+		if pred(v) {
+			return v
+		}
+	}
+	return nil
+}

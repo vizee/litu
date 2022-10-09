@@ -87,7 +87,17 @@ func CountBy[T any](a []T, pred PredFn[T]) int {
 	return n
 }
 
-func GroupBy[T any, K comparable](a []T, key func(*T) K) map[K][]T {
+func CountPtrBy[T any](a []*T, pred PredFn[T]) int {
+	n := 0
+	for i := range a {
+		if pred(a[i]) {
+			n++
+		}
+	}
+	return n
+}
+
+func GroupBy[T any, K comparable](a []T, key MapFn[T, K]) map[K][]T {
 	m := make(map[K][]T)
 	for i := range a {
 		k := key(&a[i])
@@ -96,7 +106,7 @@ func GroupBy[T any, K comparable](a []T, key func(*T) K) map[K][]T {
 	return m
 }
 
-func GroupSortedBy[T any](a []T, eq func(*T, *T) bool) [][]T {
+func GroupSortedBy[T any](a []T, eq cmp.Equal[*T]) [][]T {
 	var (
 		r [][]T
 		g []T

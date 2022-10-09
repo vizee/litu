@@ -25,3 +25,11 @@ func Pairs[K comparable, V any](m map[K]V) []pair.Pair[K, V] {
 	}
 	return pairs
 }
+
+func FromPairs[K comparable, V any](pairs ...pair.Pair[K, V]) map[K]V {
+	m := make(map[K]V, len(pairs))
+	for _, p := range pairs {
+		m[p.A] = p.B
+	}
+	return m
+}

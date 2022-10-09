@@ -1,6 +1,8 @@
 package maps
 
-import "github.com/vizee/litu/cmp"
+import (
+	"github.com/vizee/litu/cmp"
+)
 
 type Set[K comparable] map[K]struct{}
 
@@ -69,4 +71,12 @@ func (s Set[K]) IsSubset(other Set[K]) bool {
 		}
 	}
 	return true
+}
+
+func NewSet[K comparable](members ...K) Set[K] {
+	s := make(Set[K], len(members))
+	for _, m := range members {
+		s[m] = struct{}{}
+	}
+	return s
 }

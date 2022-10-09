@@ -12,7 +12,7 @@ func Union[T comparable](a []T, b []T) []T {
 	r := make([]T, 0, len(a)+len(b))
 	r = append(r, a...)
 	for i := range b {
-		if Contains(a, &b[i]) {
+		if Contains(a, b[i]) {
 			continue
 		}
 		r = append(r, b[i])
@@ -26,7 +26,7 @@ func Intersect[T comparable](a []T, b []T) []T {
 	}
 	r := make([]T, 0, len(b))
 	for i := range b {
-		if Contains(a, &b[i]) {
+		if Contains(a, b[i]) {
 			r = append(r, b[i])
 		}
 	}
@@ -36,7 +36,7 @@ func Intersect[T comparable](a []T, b []T) []T {
 func Diff[T comparable](a []T, b []T) []T {
 	r := make([]T, 0, len(a))
 	for i := range a {
-		if !Contains(b, &a[i]) {
+		if !Contains(b, a[i]) {
 			r = append(r, a[i])
 		}
 	}
@@ -51,6 +51,58 @@ func UnionSorted[T constraints.Compare](a []T, b []T) []T {
 			r = append(r, a[i])
 			i++
 		} else if a[i] > b[j] {
+			r = append(r, b[j])
+			j++
+		} else {
+			r = append(r, a[i])
+			i++
+			j++
+		}
+	}
+	if i < len(a) {
+		r = append(r, a[:i]...)
+	}
+	if j < len(b) {
+		r = append(r, b[:j]...)
+	}
+	return r
+}
+
+func UnionSortedBy[T any](a []T, b []T, cmp cmp.Cmp[*T]) []T {
+	r := make([]T, 0, len(a)+len(b))
+	i, j := 0, 0
+	for i < len(a) && j < len(b) {
+		ord := cmp(&a[i], &b[j])
+		if ord < 0 {
+			r = append(r, a[i])
+			i++
+		} else if ord > 0 {
+			r = append(r, b[j])
+			j++
+		} else {
+			r = append(r, a[i])
+			i++
+			j++
+		}
+	}
+	if i < len(a) {
+		r = append(r, a[:i]...)
+	}
+	if j < len(b) {
+		r = append(r, b[:j]...)
+	}
+	return r
+}
+
+func UnionSortedPtrBy[T any](a []*T, b []*T, cmp cmp.Cmp[*T]) []*T {
+	r := make([]*T, 0, len(a)+len(b))
+	i, j := 0, 0
+	for i < len(a) && j < len(b) {
+		ord := cmp(a[i], b[j])
+		if ord < 0 {
+			r = append(r, a[i])
+			i++
+		} else if ord > 0 {
 			r = append(r, b[j])
 			j++
 		} else {
@@ -95,10 +147,10 @@ func DiffSorted[T constraints.Compare](a []T, b []T) []T {
 	return r
 }
 
-func Dedup[T any](a []T, eq cmp.Equal[T]) []T {
+func DedupSorted[T comparable](a []T) []T {
 	i := 0
 	for j := 1; j < len(a); j++ {
-		if !eq(a[i], a[j]) {
+		if a[i] != a[j] {
 			i++
 			if i != j {
 				a[i] = a[j]
@@ -112,10 +164,10 @@ func Dedup[T any](a []T, eq cmp.Equal[T]) []T {
 	}
 }
 
-func DedupSorted[T comparable](a []T) []T {
+func DedupSortedBy[T any](a []T, eq cmp.Equal[T]) []T {
 	i := 0
 	for j := 1; j < len(a); j++ {
-		if a[i] != a[j] {
+		if !eq(a[i], a[j]) {
 			i++
 			if i != j {
 				a[i] = a[j]
