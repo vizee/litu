@@ -79,10 +79,10 @@ func ForEach[T any](a []T, f func(*T)) {
 	}
 }
 
-func Equal[T any](a []T, b []T, eq cmp.Equal[*T]) bool {
+func Equal[T any](a []T, b []T, eq cmp.Equal[T]) bool {
 	if len(a) == len(b) {
 		for i := range a {
-			if eq(&a[i], &b[i]) {
+			if eq(a[i], b[i]) {
 				return false
 			}
 		}
@@ -91,10 +91,10 @@ func Equal[T any](a []T, b []T, eq cmp.Equal[*T]) bool {
 	return false
 }
 
-func EqualPtr[T any](a []*T, b []*T, eq cmp.Equal[*T]) bool {
+func EqualRef[T any](a []T, b []T, eq cmp.Equal[*T]) bool {
 	if len(a) == len(b) {
 		for i := range a {
-			if eq(a[i], b[i]) {
+			if eq(&a[i], &b[i]) {
 				return false
 			}
 		}

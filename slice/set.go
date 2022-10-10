@@ -68,34 +68,8 @@ func UnionSorted[T constraints.Compare](a []T, b []T) []T {
 	return r
 }
 
-func UnionSortedBy[T any](a []T, b []T, cmp cmp.Cmp[*T]) []T {
+func UnionSortedBy[T any](a []T, b []T, cmp cmp.Cmp[T]) []T {
 	r := make([]T, 0, len(a)+len(b))
-	i, j := 0, 0
-	for i < len(a) && j < len(b) {
-		ord := cmp(&a[i], &b[j])
-		if ord < 0 {
-			r = append(r, a[i])
-			i++
-		} else if ord > 0 {
-			r = append(r, b[j])
-			j++
-		} else {
-			r = append(r, a[i])
-			i++
-			j++
-		}
-	}
-	if i < len(a) {
-		r = append(r, a[:i]...)
-	}
-	if j < len(b) {
-		r = append(r, b[:j]...)
-	}
-	return r
-}
-
-func UnionSortedPtrBy[T any](a []*T, b []*T, cmp cmp.Cmp[*T]) []*T {
-	r := make([]*T, 0, len(a)+len(b))
 	i, j := 0, 0
 	for i < len(a) && j < len(b) {
 		ord := cmp(a[i], b[j])

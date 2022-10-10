@@ -49,11 +49,11 @@ func Min[T constraints.Number](a []T) option.Option[T] {
 	}
 }
 
-func MaxBy[T any](a []T, cmp cmp.Cmp[*T]) option.Option[T] {
+func MaxBy[T any](a []T, cmp cmp.Cmp[T]) option.Option[T] {
 	if len(a) > 0 {
 		r := a[0]
 		for i := 1; i < len(a); i++ {
-			if cmp(&a[i], &r) > 0 {
+			if cmp(a[i], r) > 0 {
 				r = a[i]
 			}
 		}
@@ -63,31 +63,49 @@ func MaxBy[T any](a []T, cmp cmp.Cmp[*T]) option.Option[T] {
 	}
 }
 
-func MinBy[T any](a []T, cmp cmp.Cmp[*T]) option.Option[T] {
+func MaxPtrBy[T any](a []*T, cmp cmp.Cmp[*T]) *T {
 	if len(a) > 0 {
 		r := a[0]
 		for i := 1; i < len(a); i++ {
-			if cmp(&a[i], &r) < 0 {
+			if cmp(a[i], r) > 0 {
+				r = a[i]
+			}
+		}
+		return r
+	} else {
+		return nil
+	}
+}
+
+func MinBy[T any](a []T, cmp cmp.Cmp[T]) option.Option[T] {
+	if len(a) > 0 {
+		r := a[0]
+		for i := 1; i < len(a); i++ {
+			if cmp(a[i], r) < 0 {
 				r = a[i]
 			}
 		}
 		return option.Some(r)
 	} else {
 		return option.None[T]()
+	}
+}
+
+func MinPtrBy[T any](a []*T, cmp cmp.Cmp[*T]) *T {
+	if len(a) > 0 {
+		r := a[0]
+		for i := 1; i < len(a); i++ {
+			if cmp(a[i], r) < 0 {
+				r = a[i]
+			}
+		}
+		return r
+	} else {
+		return nil
 	}
 }
 
 func CountBy[T any](a []T, pred PredFn[T]) int {
-	n := 0
-	for i := range a {
-		if pred(&a[i]) {
-			n++
-		}
-	}
-	return n
-}
-
-func CountPtrBy[T any](a []*T, pred PredFn[T]) int {
 	n := 0
 	for i := range a {
 		if pred(a[i]) {
@@ -100,7 +118,7 @@ func CountPtrBy[T any](a []*T, pred PredFn[T]) int {
 func GroupBy[T any, K comparable](a []T, key MapFn[T, K]) map[K][]T {
 	m := make(map[K][]T)
 	for i := range a {
-		k := key(&a[i])
+		k := key(a[i])
 		m[k] = append(m[k], a[i])
 	}
 	return m
