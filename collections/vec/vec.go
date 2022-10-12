@@ -1,6 +1,10 @@
 package vec
 
-import "github.com/vizee/litu/option"
+import (
+	"github.com/vizee/litu/cmp"
+	"github.com/vizee/litu/option"
+	"github.com/vizee/litu/slice"
+)
 
 type Vec[T any] struct {
 	a []T
@@ -36,6 +40,10 @@ func (v *Vec[T]) GetRef(idx int) *T {
 	} else {
 		return nil
 	}
+}
+
+func (v *Vec[T]) FindBy(x *T, cmp cmp.Equal[*T]) slice.Position {
+	return slice.FindBy(v.a, x, cmp)
 }
 
 func (v *Vec[T]) Push(x T) {
