@@ -38,3 +38,19 @@ func Iff[T any, O Optional[T], U any](o O, then func(T) U, els ...func() U) U {
 		return zero
 	}
 }
+
+func Map[T, U any, O Optional[T]](o O, f func(T) U) Option[U] {
+	if o.IsSome() {
+		return Some(f(o.Inner()))
+	} else {
+		return None[U]()
+	}
+}
+
+func AndThen[T, U any, O Optional[T]](o O, f func(T) Option[U]) Option[U] {
+	if o.IsSome() {
+		return f(o.Inner())
+	} else {
+		return None[U]()
+	}
+}

@@ -16,7 +16,7 @@ func (q *VecDeque[T]) resizeCap(n int) {
 	buf := make([]T, n)
 	m := q.Len()
 	i := q.wrapIdx(q.head)
-	j := q.wrapIdx(q.tail)
+	j := q.wrapIdx(q.tail-1) + 1
 	if i <= j {
 		copy(buf, q.buf[i:j])
 	} else {
@@ -66,11 +66,14 @@ func (q *VecDeque[T]) Reserve(additional int) {
 
 func (q *VecDeque[T]) growCap() {
 	n := len(q.buf)
-	if n < 1024 {
-		q.resizeCap(n + n)
+	if n == 0 {
+		n = 1
+	} else if n < 1024 {
+		n = n + n
 	} else {
-		q.resizeCap(n + n/4)
+		n = n + n/4
 	}
+	q.resizeCap(n)
 }
 
 func (q *VecDeque[T]) PushFront(v T) {
@@ -101,7 +104,7 @@ func (q *VecDeque[T]) PushBack(v T) {
 
 func (q *VecDeque[T]) PopBack() option.Option[T] {
 	if !q.Empty() {
-		q.tail++
+		q.tail--
 		return option.Some(q.buf[q.wrapIdx(q.tail)])
 	} else {
 		return option.Option[T]{}

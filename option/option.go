@@ -61,19 +61,3 @@ func Some[T any](v T) Option[T] {
 func None[T any]() Option[T] {
 	return Option[T]{}
 }
-
-func Map[T, U any](o *Option[T], f func(*T) U) Option[U] {
-	if o.some {
-		return Some(f(&o.v))
-	} else {
-		return None[U]()
-	}
-}
-
-func AndThen[T, U any](o *Option[T], f func(*T) Option[U]) Option[U] {
-	if o.some {
-		return f(&o.v)
-	} else {
-		return None[U]()
-	}
-}
